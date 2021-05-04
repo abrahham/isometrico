@@ -41,6 +41,9 @@ class Isometrico {
   		int y = (px + py) / 2;
 		return new Point(x,y);
 	}
+	public void trazarPrisma(Prisma prisma) {
+	
+	}
 	public void trazarPrisma(int xi, int yi, int xf, int yf, int altura) {
 		for(int i = 0; i <= yf - yi; i++) {
 			this.g.setColor(Color.GREEN);
@@ -48,14 +51,32 @@ class Isometrico {
 		}
 		for(int i = 0; i < altura; i++) {
 			this.g.setColor(Color.BLUE);
-			trazarLinea(xi, yf, xf, yf, i);				
+			trazarLinea(xi, yf, xf, yf, i);			
 			this.g.setColor(Color.YELLOW);
 			trazarLinea(xf, yi, xf, yf, i);
 		}
 	}
-	public void k() {
+	public void iniciar() {
+		dibujarPlataforma();
 		trazarPrisma(150,0,200,50, 100);
 		trazarPrisma(50,0,70,200, 10);
+		trazarCara(new int[]{100,200,0,250,200,200,400,200,0}, Color.WHITE);
+		trazarCara(new int[]{100,400,0,300,400,0,300,400,100,100,400,100}, Color.GREEN);
+	}
+	public void trazarCara(int[] puntos, Color color) {
+		this.g.setColor(color);
+		for(int i = 0; i < puntos.length; i += 3) {
+			if(i + 3 == puntos.length)
+				trazarLinea(puntos[i],puntos[i + 1],puntos[i + 2],puntos[0],puntos[1],puntos[2]);
+			else
+				trazarLinea(
+					puntos[i],puntos[i + 1],puntos[i + 2],
+					puntos[i + 3],puntos[i + 4],puntos[i + 5]
+				);			
+		}
+		/*trazarLinea(puntos[0],puntos[1],puntos[2],puntos[3],puntos[4],puntos[5]);
+		trazarLinea(puntos[3],puntos[4],puntos[5],puntos[6],puntos[7],puntos[8]);
+		trazarLinea(puntos[6],puntos[7],puntos[8],puntos[0],puntos[1],puntos[2]);*/
 	}
 	protected void trazarLinea(int xi, int yi, int xf, int yf) {
 		Point a = coordIso(xi, yi);
@@ -66,5 +87,10 @@ class Isometrico {
 		Point a = coordIso(xi, yi);
 		Point b = coordIso(xf, yf);
 		g.drawLine(xCart(a.x), yCart(a.y, altura), xCart(b.x), yCart(b.y, altura));
+	}
+	protected void trazarLinea(int xi, int yi, int alturaInicial, int xf, int yf, int alturaFinal) {
+		Point a = coordIso(xi, yi);
+		Point b = coordIso(xf, yf);
+		g.drawLine(xCart(a.x), yCart(a.y, alturaInicial), xCart(b.x), yCart(b.y, alturaFinal));
 	}
 }

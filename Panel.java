@@ -10,8 +10,6 @@ class Panel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		iso = new Isometrico(g, new Point(this.getWidth() / 2, 50));
-		iso.dibujarPlataforma();
-		iso.g.setColor(Color.WHITE);
-		iso.k();
+		iso.iniciar();
 	}
 }
