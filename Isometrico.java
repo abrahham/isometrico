@@ -14,11 +14,11 @@ class Isometrico {
 	}
 	protected void dibujarPlataforma() {
 		int ancho = 500, largo = 500;
-		int separacion = ancho / 10;
+		int separacion = 20;
 		this.g.setColor(Color.RED);
 		dibujarCuadro(0,0, ancho, largo);
 		Point a, b;
-		for(int i = 1; i<10; i++) {
+		for(int i = 1; i < ancho / separacion; i++) {
 			trazarLinea(0, i * separacion, largo, i * separacion);
 			trazarLinea(i * separacion, 0, i * separacion, largo);			
 		}
@@ -60,23 +60,33 @@ class Isometrico {
 		dibujarPlataforma();
 		trazarPrisma(150,0,200,50, 100);
 		trazarPrisma(50,0,70,200, 10);
-		trazarCara(new int[]{100,200,0,250,200,200,400,200,0}, Color.WHITE);
-		trazarCara(new int[]{100,400,0,300,400,0,300,400,100,100,400,100}, Color.GREEN);
+		trazar(new int[][]{
+				{50,500,0},{100,500,0},
+				{100,300,50},{50,300,50}
+			}, Color.BLUE, 1);
+		trazar(new int[][]{{15,1,0}, {20,1,0}, {20,5,0}, {15,5,0}}, Color.YELLOW, 20);		
 	}
-	public void trazarCara(int[] puntos, Color color) {
+	public void trazar(int[][] puntos, Color color, int separacion) {
+		if(puntos.length > 4) return;
 		this.g.setColor(color);
-		for(int i = 0; i < puntos.length; i += 3) {
-			if(i + 3 == puntos.length)
-				trazarLinea(puntos[i],puntos[i + 1],puntos[i + 2],puntos[0],puntos[1],puntos[2]);
+		for(int i = 0; i < puntos.length; i++) {
+			if(i + 1 == puntos.length)
+				trazarLinea(
+					puntos[i][0] * separacion, puntos[i][1] * separacion, puntos[i][2] * separacion,
+					puntos[0][0] * separacion, puntos[0][1] * separacion, puntos[0][2] * separacion
+				);
 			else
 				trazarLinea(
-					puntos[i],puntos[i + 1],puntos[i + 2],
-					puntos[i + 3],puntos[i + 4],puntos[i + 5]
-				);			
+					puntos[i][0] * separacion, puntos[i][1] * separacion, puntos[i][2] * separacion,
+					puntos[i + 1][0] * separacion, puntos[i + 1][1] * separacion, puntos[i + 1][2] * separacion
+				);
 		}
-		/*trazarLinea(puntos[0],puntos[1],puntos[2],puntos[3],puntos[4],puntos[5]);
-		trazarLinea(puntos[3],puntos[4],puntos[5],puntos[6],puntos[7],puntos[8]);
-		trazarLinea(puntos[6],puntos[7],puntos[8],puntos[0],puntos[1],puntos[2]);*/
+		for(int i = 0; i <= (puntos[1][0] - puntos[0][0]) * separacion; i++) {
+			trazarLinea(
+				puntos[0][0] * separacion + i, puntos[0][1] * separacion, puntos[0][2] * separacion,
+				puntos[3][0] * separacion + i, puntos[3][1] * separacion, puntos[3][2] * separacion
+			);
+		}
 	}
 	protected void trazarLinea(int xi, int yi, int xf, int yf) {
 		Point a = coordIso(xi, yi);
